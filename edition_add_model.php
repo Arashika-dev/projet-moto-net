@@ -1,32 +1,20 @@
-<?php
-require_once __DIR__ . "/layout/header.php";
+<?php 
+require_once __DIR__ ."/layout/header.php";
 require_once __DIR__ ."/functions/db.php";
 
 $pdo = getConnection();
 
-$type = $pdo->query("SELECT * FROM type");
 $brand = $pdo->query("SELECT * FROM brand");
 $category = $pdo->query("SELECT * FROM category_moto");
 ?>
 
 <main>
     <section class="container">
-        <h1 class="mb-5">Mode édition</h1>
-        
-            <form action="edition_etape_model.php" method="GET">
-                <div class="col-2 mb-3">
-                    <label for="type" class="form-label">Type article</label>
-                    <select name="type" id="type" class="form-select" aria-label="Type Article">
-                        <?php 
-                            while($row = $type->fetch()) 
-                            { ?>
-                                <option value="<?php echo $row['type_id'] ?>"><?php echo $row['type_name']?></option>
-                            <?php }
-                        ?>
-                    </select>
-                </div>
-                <div class="row g-3 mb-4">
-                    <div class="col-md-3">
+        <h1 class="fs-3 text-center mb-4">Ajout de modèle moto</h1>
+        <div class="border rounded col-6 offset-3 p-4">
+            <form action="process_add_model.php" method="POST">
+                <div class="row">
+                    <div class="col-6">
                         <label for="brand" class="form-label">Marque :</label>
                         <select name="brand" id="brand" class="form-select" aria-label="Marques moto">
                             <?php 
@@ -37,7 +25,7 @@ $category = $pdo->query("SELECT * FROM category_moto");
                             ?>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-6">
                         <label for="category" class="form-label">Catégorie :</label>
                         <select name="category" id="category" class="form-select" aria-label="Marques moto">
                             <?php 
@@ -49,12 +37,20 @@ $category = $pdo->query("SELECT * FROM category_moto");
                         </select>
                     </div>
                 </div>
-                <div>
-                    <button class="btn btn-primary" type="submit">Étape suivante</button>
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <label for="model" class="form-label">Modèle :</label>
+                        <input type="text" value="" name="model" id="model" placeholder="Nom du modèle" class="form-control">
+                    </div>
+                    <div class="col-6">
+                        <label for="year" class="form-label">Année :</label>
+                        <input type="text" value="" name="year" id="year" placeholder="Année du modèle" class="form-control">
+                    </div>
                 </div>
+                <button type="submit" class="btn btn-success mt-3">Ajouter</button>
             </form>
+        </div>
     </section>
 </main>
 
-<?php
-require_once __DIR__ ."/layout/footer.php";
+<?php require_once __DIR__ ."/layout/footer.php";
