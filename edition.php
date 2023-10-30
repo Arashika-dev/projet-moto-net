@@ -7,7 +7,6 @@ $pdo = getConnection();
 $type = $pdo->query("SELECT * FROM type");
 $brand = $pdo->query("SELECT * FROM brand");
 $category = $pdo->query("SELECT * FROM category_moto");
-$modelSql = "SELECT * FROM "
 ?>
 
 <main>
