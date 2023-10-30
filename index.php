@@ -10,7 +10,7 @@ require_once __DIR__ ."/layout/header.php";
     </section>
 
 
-    <section class="container">
+    <section class="container mt-5">
         <h2>Nos dernières actualités</h2>
         <div class="row  p-2 my-5">
             <div class="col-lg-4">
@@ -50,4 +50,17 @@ require_once __DIR__ ."/layout/header.php";
             </div>
         </div>
     </section>
+
+    <section class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div>
+
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
+
+<?php
+require_once __DIR__ ."/layout/footer.php";
