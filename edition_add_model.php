@@ -40,11 +40,11 @@ $category = $pdo->query("SELECT * FROM category_moto");
                 <div class="row mt-3">
                     <div class="col-6">
                         <label for="model" class="form-label">Modèle :</label>
-                        <input type="text" value="" name="model" id="model" placeholder="Nom du modèle" class="form-control">
+                        <input type="text" value="" name="model" id="model" placeholder="Nom du modèle" class="form-control" required>
                     </div>
                     <div class="col-6">
                         <label for="year" class="form-label">Année :</label>
-                        <input type="text" value="" name="year" id="year" placeholder="Année du modèle" class="form-control">
+                        <input type="text" value="" name="year" id="year" placeholder="Année du modèle" class="form-control" required>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success mt-3">Ajouter</button>
