@@ -62,7 +62,7 @@ class Register {
         $stmt->execute();
     }
 
-    public function setGetParam(string $order):string
+    public function getGetParam(string $order):string
     {
         return $order . 'fname='. $this->firstName . '&lname=' . $this->lastName . '&pseudo=' . $this->pseudo . '&email=' . $this->email->getEmail();
     }

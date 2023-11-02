@@ -5,12 +5,6 @@ require_once __DIR__ ."/classes/Register.php";
 require_once __DIR__ ."/classes/Errors.php";
 require_once __DIR__ ."/functions/db.php";
 
-function getGetParams(array $postData, bool $opening = true): string
-{
-    $openingCharacter = $opening ? "?" : "&";
-
-    return $openingCharacter . 'fname='. ($postData['firstName'] ?? "") . '&lname=' . ($postData['lastName'] ?? "") . '&email=' . ($postData['email'] ?? "");
-}
 
 try {
     $pdo = getConnection();
@@ -31,8 +25,8 @@ try {
 
     
 
-    } catch (DuplicateEmailException | EmptyException | InvalidEmailException |DifferentPasswordException $e) {
-        Utils::redirect('register.php?error='. $e->getCode() . getGetParams($_POST, false));
+    } catch (DuplicateEmailException | EmptyException | InvalidEmailException |DifferentPasswordException | DuplicatePseudoException $e) {
+        Utils::redirect('register.php?error='. $e->getCode() . $register->getGetParam('&'));
     } catch (PDOException | Exception $e) {
-        Utils::redirect('register.php?error='. $e->getMessage() . getGetParams($_POST, false));
+        Utils::redirect('register.php?error='. $e->getMessage() . $register->getGetParam('&'));
     }
