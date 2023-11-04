@@ -13,6 +13,7 @@ $menuItemsRight = [
     ];
 
 $menusItemsRightAuth = [
+    new MenuItem("profile.php",$_SESSION['userInfos']['pseudo']),
     new MenuItem("logout.php","Déconnexion")
 ];
 ?>
@@ -39,7 +40,6 @@ $menusItemsRightAuth = [
                                 <a class= <?php echo $item->getCssClasses() ?> href="<?php echo $item->getUrl() ?>"><?php echo $item->getLabel() ?></a>
                         <?php }
                             }else {
-                                echo $_SESSION['userInfos']['pseudo'];
                                 foreach ($menusItemsRightAuth as $item) { ?>
                                     <a class= <?php echo $item->getCssClasses() ?> href="<?php echo $item->getUrl() ?>"><?php echo $item->getLabel() ?></a>
                             <?php }
