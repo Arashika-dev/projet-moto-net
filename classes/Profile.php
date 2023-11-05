@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ ."/Email.php";
+require_once __DIR__ ."/File.php";
 class Profile
 {
     private string $lastName;
@@ -8,7 +9,7 @@ class Profile
     private Email $email;
     private string $password;
     private string $confirmPassword;
-    private string $profilePicture;
+    private File $profilePicture;
     public function __construct(
         private int $id,
         PDO $pdo
@@ -22,12 +23,25 @@ class Profile
         $this->pseudo = $user['user_pseudo'];
         $this->email = new Email ($user['user_email']);
         $this->password = $user['user_password'];
-        $this->profilePicture = $user['user_profile_picture'] ?? 'default.png';
+        $this->profilePicture = new File ($user['user_profile_picture'] ?? 'default.png');
     }
 
-    public function updateProfile(PDO $pdo)
+    public function updateProfile(PDO $pdo,  $newFirstName, $newLastName, $newPseudo, Email $newEmail, $newPassword, $newProfilePic)
     {
+        $email = $newEmail->getEmail();
+        $duplication = new DuplicateChecker($pdo);
+        // Vérifie la duplication d'e-mail avant d'update en excluant ce profil
+        if ($duplication->isDuplicate($email, 'email',$this->id)) 
+        {
+            throw new DuplicateEmailException();
+        }
 
+        // Vérifie la duplication du pseudo avant d'ajouter l'inscription
+        if ($duplication->isDuplicate($newPseudo, 'pseudo', $this->id)){
+            throw new DuplicatePseudoException();
+        }
+
+        $query = 'UPDATE users SET user_name = :lastName, user_firstname = :firstName, user_pseudo = :pseudo, user_email = :email, user_password = :password WHERE user_id = :id';
 
     }
 
@@ -41,7 +55,7 @@ class Profile
 
     public function getPassword(): string { return $this->password; }
 
-    public function getProfilePicture(): string { return $this->profilePicture; }
+    public function getProfilePicture(): string { return $this->profilePicture->getFileName(); }
 
     public function getEmail(): string { return $this->email->getEmail(); }
 }

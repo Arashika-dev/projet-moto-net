@@ -2,6 +2,7 @@
 require_once __DIR__ ."/layout/header.php";
 require_once __DIR__ ."/functions/db.php";
 require_once __DIR__ ."/classes/Profile.php";
+require_once __DIR__ ."/classes/Utils.php";
 
 if (!isset($_SESSION['userInfos'])) {
     $_SESSION['loginErrorMessage'] = "Vous devez être identifié pour accéder à cette page";
@@ -20,24 +21,24 @@ $profile = new Profile($_SESSION['userInfos']['id'],$pdo)
                         <img src="img/profile_picture/<?php echo $profile->getProfilePicture() ?>" width="200px" height="200px" alt="" class="border rounded-circle">
                 </div>
                 <div class="col-md-8 offset-md-1">
-                    <form action="">
+                    <form action="profile_modif_process.php" method="POST" enctype="multipart/form-data">
                         <div class="col-4 mb-3">
                             <label for="pseudo" class="form-label">Pseudo :</label>
-                            <input type="text" class="form-control" name="pseudo" id="pseudo" value="<?php echo $profile->getPseudo() ?>" disabled>
+                            <input type="text" class="form-control" name="pseudo" id="pseudo" value="<?php echo $profile->getPseudo() ?>" disabled required>
                         </div>
                         <div class="row mb-3">
                             <div class="col-5 mx-0">
                                 <label for="" class="form-label">Prénom :</label>
-                                <input type="text" class="form-control" name="firstName" id="firstName" value="<?php echo $profile->getFirstName() ?>" disabled>
+                                <input type="text" class="form-control" name="firstName" id="firstName" value="<?php echo $profile->getFirstName() ?>" disabled required>
                             </div>
                             <div class="col-5 mx-0">
                                 <label for="" class="form-label">Nom :</label>
-                                <input type="text" class="form-control" name="lastName" id="lastName" value="<?php echo $profile->getLastName() ?>" disabled>
+                                <input type="text" class="form-control" name="lastName" id="lastName" value="<?php echo $profile->getLastName() ?>" disabled required>
                             </div>
                         </div>
                         <div class="col-10 mb-3">
                             <label for="" class="form-label">Email :</label>
-                            <input type="text" class="form-control" name="email" id="email" value="<?php echo $profile->getEmail() ?>" disabled>
+                            <input type="text" class="form-control" name="email" id="email" value="<?php echo $profile->getEmail() ?>" disabled required>
                         </div>
                         <div class="row mb-3">
                             <div class="col-5">

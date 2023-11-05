@@ -12,10 +12,12 @@ $menuItemsRight = [
     new MenuItem("login.php","Connexion")
     ];
 
-$menusItemsRightAuth = [
+if (isset($_SESSION['userInfos'])){
+    $menusItemsRightAuth = [
     new MenuItem("profile.php",$_SESSION['userInfos']['pseudo']),
     new MenuItem("logout.php","Déconnexion")
-];
+    ];
+}
 ?>
 
 <nav class="navbar navbar-expand-lg bg-warning bg-opacity-50">
