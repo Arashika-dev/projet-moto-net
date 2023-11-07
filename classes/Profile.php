@@ -58,7 +58,7 @@ class Profile
 
     public function updatePassword(PDO $pdo, string $currentPassword, string $newPassword, string $confirmPassword):void
     {
-        if(password_verify($this->password, $currentPassword)) {
+        if(!password_verify($this->password, $currentPassword)) {
             throw new BadPasswordException();
         }
 
@@ -71,7 +71,7 @@ class Profile
     }
     public function updateProfilePicture (PDO $pdo) : void
     {
-            //Keep old name for deleting in case of success upload
+            //Retain the previous file name as a backup in case the upload is successful
             $oldPictureName = self::getProfilePicture();
             $oldPicturePath = 'img/profile_picture/' . $oldPictureName;
 

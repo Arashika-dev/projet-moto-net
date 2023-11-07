@@ -8,9 +8,7 @@ if (!isset($_SESSION['userInfos'])) {
 }
 
 
-// if (empty($_POST)) {
-//     Utils::redirect('profile.php?error=' . Errors::EMPTY);
-// }
+
 
 require_once __DIR__ .'/classes/Profile.php';
 require_once __DIR__ .'/functions/db.php';
@@ -18,6 +16,19 @@ require_once __DIR__ .'/classes/Utils.php';
 $pdo = getConnection();
 
 $profile = new Profile($_SESSION['userInfos']['id'], $pdo);
+
+if (empty($_POST)) {
+    if (isset($_FILES['profilePic'])) {
+    try {
+        $profile->updateProfilePicture($pdo);
+        Utils::redirect('profile.php');
+    }catch (FailedUploadException $e) {
+        Utils::redirect('profile.php?error' . $e->getCode());
+    }
+    }else {
+        Utils::redirect('profile.php?error=' . Errors::EMPTY);
+    }
+}
 
 if (isset($_POST['pseudo']))
 {
@@ -42,7 +53,11 @@ if (isset($_POST['firstName']) && isset($_POST['lastName']))
 
 if (isset($_POST['email']))
 {
-    $profile->updateEmail($pdo, $_POST['email']);
+    try {
+        $profile->updateEmail($pdo, $_POST['email']);
+    }catch (InvalidEmailException | DuplicateEmailException) {
+        Utils::redirect('profile.php?error=' . $e->getCode());
+    }
 }
 
 if (isset($_POST['currentPassword']) && isset($_POST['newPassword']) && isset($_POST['confirmPassword']))
@@ -55,12 +70,3 @@ if (isset($_POST['currentPassword']) && isset($_POST['newPassword']) && isset($_
     }
 }
 
-if (isset($_FILES['profilePic']))
-{
-    try {
-        $profile->updateProfilePicture($pdo);
-        Utils::redirect('profile.php');
-    }catch (FailedUploadException $e) {
-        Utils::redirect('profile.php?error' . $e->getCode());
-}
-}
