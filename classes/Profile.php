@@ -71,9 +71,20 @@ class Profile
     }
     public function updateProfilePicture (PDO $pdo) : void
     {
+            //Keep old name for deleting in case of success upload
+            $oldPictureName = self::getProfilePicture();
+            $oldPicturePath = 'img/profile_picture/' . $oldPictureName;
+
             $profilePicture = new File('profilePicture');
-            $fileName =  $profilePicture ->uploadFile('img/profile_picture','profilePic');
+            $fileName =  $profilePicture ->uploadFile('img/profile_picture/','profilePic');
             self::updateRequest($pdo,'profile_picture', $fileName);
+
+            //Delete old picture
+            if (strcmp($oldPictureName, 'default.png') !== 0)
+            {
+                unlink($oldPicturePath);
+            }
+
     }
     private function updateRequest(PDO $pdo, string $fieldUpdate,string $valueUpdate) : void
     {

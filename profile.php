@@ -24,6 +24,14 @@ if (!isset($_SESSION['userInfos'])) {
                     <img src="img/profile_picture/<?php echo $profile->getProfilePicture() ?>" width="200px" height="200px" alt="" class="border rounded-circle">
                 </div>
                 <div class="col-md-8 offset-md-1">
+                    <?php 
+                        if (isset($_GET['error'])){ ?>
+                            <div class="alert alert-danger">
+                                <?php echo Errors::getErrorMessage($_GET['error']) ?>
+                            </div> 
+                    <?php
+                        }
+                    ?>
                     <form action="profile_modif_process.php" method="POST">
                         <div class="row mb-3">
                             <div class="col-5 mb-3">

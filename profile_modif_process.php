@@ -59,7 +59,8 @@ if (isset($_FILES['profilePic']))
 {
     try {
         $profile->updateProfilePicture($pdo);
+        Utils::redirect('profile.php');
     }catch (FailedUploadException $e) {
-        Utils::redirect('profile.php?error=Upload');
+        Utils::redirect('profile.php?error' . $e->getCode());
 }
 }
