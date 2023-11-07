@@ -11,7 +11,7 @@ const fieldsToEnable = [
     document.getElementById('firstName'),
     document.getElementById('lastName'),
     document.getElementById('email'),
-    document.getElementById('password')
+    document.getElementById('currentPassword')
 ];
 
 // Fonction pour activer les champs de formulaire

@@ -10,6 +10,7 @@ class Errors {
     public const INVALID_CREDENTIALS    = 7;
     public const USER_NOT_FOUND         = 8;
     public const REGISTER_FILE_UPLOAD   = 9;
+    public const WRONG_PASSWORD         = 10;
 
 public static function getErrorMessage(int $errorCode): string
 {
@@ -23,6 +24,7 @@ public static function getErrorMessage(int $errorCode): string
         self::INVALID_CREDENTIALS   => "Identifiants invalides",
         self::USER_NOT_FOUND        => "Utilisateur inconnu",
         self::REGISTER_FILE_UPLOAD  => "Erreur lors de l'upload de fichier",
+        self::WRONG_PASSWORD        => "Mot de passe incorrect",
         default                     => "Une erreur est survenue"
     };
 }

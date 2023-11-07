@@ -1,16 +1,19 @@
 <?php 
-require_once __DIR__ ."/layout/header.php";
+session_start();
 require_once __DIR__ ."/functions/db.php";
 require_once __DIR__ ."/classes/Profile.php";
 require_once __DIR__ ."/classes/Utils.php";
+require_once __DIR__ ."/layout/header.php";
+
+$pdo = getConnection();
+$profile = new Profile($_SESSION['userInfos']['id'],$pdo);
 
 if (!isset($_SESSION['userInfos'])) {
     $_SESSION['loginErrorMessage'] = "Vous devez être identifié pour accéder à cette page";
     Utils::redirect('login.php');
 }
 
-$pdo = getConnection();
-$profile = new Profile($_SESSION['userInfos']['id'],$pdo)
+
 ?>
 
 <main>
@@ -18,16 +21,23 @@ $profile = new Profile($_SESSION['userInfos']['id'],$pdo)
         <div class="row p-1">
             <div class="col-9 d-lg-flex flex-row border rounded py-3">
                 <div class="col-md-4 pt-4 ps-5">
-                        <img src="img/profile_picture/<?php echo $profile->getProfilePicture() ?>" width="200px" height="200px" alt="" class="border rounded-circle">
+                    <img src="img/profile_picture/<?php echo $profile->getProfilePicture() ?>" width="200px" height="200px" alt="" class="border rounded-circle">
                 </div>
                 <div class="col-md-8 offset-md-1">
-                    <form action="profile_modif_process.php" method="POST" enctype="multipart/form-data">
-                        <div class="col-4 mb-3">
-                            <label for="pseudo" class="form-label">Pseudo :</label>
-                            <input type="text" class="form-control" name="pseudo" id="pseudo" value="<?php echo $profile->getPseudo() ?>" disabled required>
-                        </div>
+                    <form action="profile_modif_process.php" method="POST">
                         <div class="row mb-3">
-                            <div class="col-5 mx-0">
+                            <div class="col-5 mb-3">
+                                <label for="pseudo" class="form-label">Pseudo :</label>
+                                <input type="text" class="form-control" name="pseudo" id="pseudo" value="<?php echo $profile->getPseudo() ?>" disabled required>
+                            </div>
+                            <div>
+                            <button class="btn btn-primary d-none" type="submit">Enregistrer</button>
+                            </div>
+                        </div>        
+                    </form>
+                    <form action="profile_modif_process.php" method="POST">
+                        <div class="row mb-3">
+                            <div class="col-5 mx-0 mb-3">
                                 <label for="" class="form-label">Prénom :</label>
                                 <input type="text" class="form-control" name="firstName" id="firstName" value="<?php echo $profile->getFirstName() ?>" disabled required>
                             </div>
@@ -35,28 +45,50 @@ $profile = new Profile($_SESSION['userInfos']['id'],$pdo)
                                 <label for="" class="form-label">Nom :</label>
                                 <input type="text" class="form-control" name="lastName" id="lastName" value="<?php echo $profile->getLastName() ?>" disabled required>
                             </div>
+                            <div>
+                                <button class="btn btn-primary d-none" type="submit">Enregistrer</button>
+                            </div>
                         </div>
+                    </form>
+                    <form action="profile_modif_process.php" method="POST">
                         <div class="col-10 mb-3">
                             <label for="" class="form-label">Email :</label>
                             <input type="text" class="form-control" name="email" id="email" value="<?php echo $profile->getEmail() ?>" disabled required>
                         </div>
+                        <div class="mb-3">
+                            <button class="btn btn-primary d-none" type="submit">Enregistrer</button>
+                        </div>
+                    </form>
+                    <form action="profile_modif_process.php" method="POST">
+                        <div class="col-5">
+                            <label for="currentPassword" class="form-label">Mot de passe actuel :</label>
+                            <input type="password" class="form-control" name="currentPassword" id="currentPassword" value="******" disabled>
+                        </div>
                         <div class="row mb-3">
                             <div class="col-5">
-                                <label for="" class="form-label">Mot de passe :</label>
-                                <input type="password" class="form-control" name="password" id="password" value="<?php echo $profile->getPassword() ?>" disabled>
+                                <label for="newPassword" class="form-label">Nouveau mot de passe :</label>
+                                <input type="password" class="form-control d-none" name="newPassword" id="newPassword" value="" placeholder="Entrez votre nouveau mot de passe" >
                             </div>
                             <div class="col-5 hidden">
                                 <label for="" class="form-label d-none">Confirmation mot de passe :</label>
-                                <input type="password" class="form-control d-none" name="password" id="password" value="" placeholder="Confirmez votre mot de passe ...">
+                                <input type="password" class="form-control d-none" name="confirmPassword" id="password" value="" placeholder="Confirmez votre mot de passe ...">
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <button class="btn btn-primary d-none" type="submit">Enregistrer</button>
+                        </div>
+                    </form>
+                    <form action="profile_modif_process.php" method="POST" enctype="multipart/form-data">
                         <div class="col-5 mb-3 d-none">
                             <label for="profilePic" class="form-label">Modifiez votre photo de profil :</label>
                             <input type="file" name="profilePic" id="profilePic" class="form-control">
                         </div>
                         <div>
+                            <button class="btn btn-primary d-none" type="submit">Enregistrer</button>
+                        </div>
+                    </form>
+                        <div class="mb-3">
                             <button id="modifierBtn" class="btn btn-warning">Modifier</button>
-                            <button id="submitBtn" type="submit" class="btn btn-primary d-none">Enregistrer</button>
                         </div>
                     </form>
                 </div>

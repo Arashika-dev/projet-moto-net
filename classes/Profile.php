@@ -1,6 +1,11 @@
 <?php
 require_once __DIR__ ."/Email.php";
 require_once __DIR__ ."/File.php";
+require_once __DIR__ ."/DuplicateChecker.php";
+require_once __DIR__ ."/PasswordChecker.php";
+require_once __DIR__ ."/Exceptions/DuplicatePseudoException.php";
+require_once __DIR__ ."/Exceptions/DifferentPasswordException.php";
+require_once __DIR__ ."/Exceptions/BadPasswordException.php";
 class Profile
 {
     private string $lastName;
@@ -26,25 +31,59 @@ class Profile
         $this->profilePicture = new File ($user['user_profile_picture'] ?? 'default.png');
     }
 
-    public function updateProfile(PDO $pdo,  $newFirstName, $newLastName, $newPseudo, Email $newEmail, $newPassword, $newProfilePic)
+    public function updatePseudo(PDO $pdo, string $newPseudo):void
     {
-        $email = $newEmail->getEmail();
-        $duplication = new DuplicateChecker($pdo);
-        // Vérifie la duplication d'e-mail avant d'update en excluant ce profil
-        if ($duplication->isDuplicate($email, 'email',$this->id)) 
-        {
-            throw new DuplicateEmailException();
-        }
-
-        // Vérifie la duplication du pseudo avant d'ajouter l'inscription
-        if ($duplication->isDuplicate($newPseudo, 'pseudo', $this->id)){
-            throw new DuplicatePseudoException();
-        }
-
-        $query = 'UPDATE users SET user_name = :lastName, user_firstname = :firstName, user_pseudo = :pseudo, user_email = :email, user_password = :password WHERE user_id = :id';
-
+        $checker = new DuplicateChecker($pdo);
+    if($checker->isDuplicate($newPseudo, 'pseudo', $this->id)) {
+        throw new DuplicatePseudoException();
+    }
+        self::updateRequest($pdo,'pseudo', $newPseudo);
     }
 
+    public function updateFullName(PDO $pdo,string $newFirstName,string $newLastName):void
+    {
+        self::updateRequest($pdo,'firstname', $newFirstName);
+        self::updateRequest($pdo,'name', $newLastName);
+    }
+
+    public function updateEmail(PDO $pdo, Email $newEmail):void
+    {
+        $email = $newEmail->getEmail();
+        $checker = new DuplicateChecker($pdo);
+        if($checker->isDuplicate($email, 'email', $this->id)) {
+            throw new DuplicateEmailException();
+        }
+        self::updateRequest($pdo,'email', $email);
+    }
+
+    public function updatePassword(PDO $pdo, string $currentPassword, string $newPassword, string $confirmPassword):void
+    {
+        if(password_verify($this->password, $currentPassword)) {
+            throw new BadPasswordException();
+        }
+
+        $comparePass = new PasswordChecker($newPassword, $confirmPassword);
+        if($comparePass->isDifferent()) {
+            throw new DifferentPasswordException();
+        }
+
+        self::updateRequest($pdo,'password', password_hash($currentPassword, PASSWORD_DEFAULT));
+    }
+    public function updateProfilePicture (PDO $pdo) : void
+    {
+            $profilePicture = new File('profilePicture');
+            $fileName =  $profilePicture ->uploadFile('img/profile_picture','profilePic');
+            self::updateRequest($pdo,'profile_picture', $fileName);
+    }
+    private function updateRequest(PDO $pdo, string $fieldUpdate,string $valueUpdate) : void
+    {
+        $id = $this->id;
+        $query = 'UPDATE users SET user_' . $fieldUpdate . ' = :update WHERE user_id = :id';
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':update', $valueUpdate);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+    }
 
     public function getLastName(): string { return $this->lastName; }
     

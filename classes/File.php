@@ -17,7 +17,7 @@ class File {
         $fileExt = pathinfo($file["name"], PATHINFO_EXTENSION);
         $fileName .=".". $fileExt;
         //Construct full path file
-        $destination = __DIR__ . $filePath . $fileName;
+        $destination = $filePath . $fileName;
 
         if (!is_uploaded_file($file['tmp_name']) || $file['error'] !== UPLOAD_ERR_OK) {
             throw new FailedUploadException;
