@@ -7,6 +7,7 @@ if(!isset($_GET["brand"]) || !isset($_GET["category"])) {
     Utils::redirect("edition.php");
 };
 
+$_SESSION['articleInfos'] = ['id_type' => $_GET['type']];
 $category = $_GET['category'];
 $brand = $_GET['brand'];
 $modelQuery = 'SELECT * FROM model_moto WHERE id_category_moto =  :id_category_moto AND id_brand = :id_brand ';
@@ -23,7 +24,7 @@ $stmt->rowCount() < 1 ? $emptyresult = true : false;
 <main>
     <section class="container">
         <h1 class="mb-4 fs-3">Choix du modèle moto</h1>
-        <form action="">
+        <form action="edition_article_content.php" method="POST">
             <div class="col-3">
                 <select name="model" id="model" class="form-select" aria-label="Modèle moto">
                 <?php
@@ -36,16 +37,21 @@ $stmt->rowCount() < 1 ? $emptyresult = true : false;
                             <option value="<?php echo $row['model_id']?>"><?php echo $row['model_name'] . ' - ' . $row['year'] ?></option>
                     <?php } ?>
                     </select>
-                    <button class="btn btn-primary mt-4" type="submit">Étape suivante</button>        
+                    <button class="btn btn-primary mt-3" type="submit">Étape suivante</button>        
                     <?php } ?>
             </div>
         </form>
-        <?php if($emptyresult){ ?>
-            <div class="col-3 my-3">
-                <!-- Direction page d'ajout de modèle moto si modèle inexistant -->
-                <a href="edition_add_model.php?<?php echo 'brand=' . $brand . '&' . 'category=' . $category ?>" class="btn btn-success mt-3">Ajouter un modèle</a>
-            </div>
-        <?php } ?>
+        <div class="row">
+            <?php if($emptyresult){ ?>
+                <div class="col-2">
+                    <!-- Direction page d'ajout de modèle moto si modèle inexistant -->
+                    <a href="edition_add_model.php?<?php echo 'brand=' . $brand . '&' . 'category=' . $category ?>" class="btn btn-success mt-3">Ajouter un modèle</a>
+                </div>
+            <?php } ?>
+                <div class="col-2">
+                    <a href="edition.php" class="btn btn-primary mt-3" >Retour</a>
+                </div>
+        </div>
     </section>
 </main>
 

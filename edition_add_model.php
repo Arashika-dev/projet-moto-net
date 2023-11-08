@@ -12,7 +12,7 @@ $category = $pdo->query("SELECT * FROM category_moto");
     <section class="container">
         <h1 class="fs-3 text-center mb-4">Ajout de modèle moto</h1>
         <div class="border rounded col-6 offset-3 p-4">
-            <form action="process_add_model.php" method="POST">
+            <form action="edition_add_model_process.php" method="POST">
                 <div class="row">
                     <div class="col-6">
                         <label for="brand" class="form-label">Marque :</label>

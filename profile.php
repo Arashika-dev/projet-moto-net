@@ -26,7 +26,7 @@ if (!isset($_SESSION['userInfos'])) {
                 <div class="col-md-8 offset-md-1">
                     <?php 
                         if (isset($_GET['error'])){ ?>
-                            <div class="alert alert-danger">
+                            <div class="alert alert-danger w-50 text-center">
                                 <?php echo Errors::getErrorMessage($_GET['error']) ?>
                             </div> 
                     <?php

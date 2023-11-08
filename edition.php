@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/layout/header.php";
 require_once __DIR__ ."/functions/db.php";
-
+$_SESSION['articleInfos'] = [];
 $pdo = getConnection();
 
 $type = $pdo->query("SELECT * FROM type");
@@ -11,7 +11,7 @@ $category = $pdo->query("SELECT * FROM category_moto");
 
 <main>
     <section class="container">
-        <h1 class="mb-5">Mode édition</h1>
+        <h1 class="mb-5">Poster un article</h1>
         
             <form action="edition_etape_model.php" method="GET">
                 <div class="col-2 mb-3">

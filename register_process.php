@@ -19,7 +19,8 @@ try {
     $register->addInscription($pdo);
     $_SESSION['userInfos'] = [
         'pseudo' => $register->getPseudo(),
-        'id' => $pdo->lastInsertId()
+        'id' => $pdo->lastInsertId(),
+        'admin' => $user['user_is_admin']
     ];
     Utils::redirect('register_success.php');
 

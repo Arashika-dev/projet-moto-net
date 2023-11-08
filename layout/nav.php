@@ -18,6 +18,12 @@ if (isset($_SESSION['userInfos'])){
     new MenuItem("logout.php","Déconnexion")
     ];
 }
+
+if(isset($_SESSION["userInfos"]["admin"])) {
+    $menusItemsAdmin = [
+        new MenuItem ('edition.php', 'Editer')
+    ];
+}
 ?>
 
 <nav class="navbar navbar-expand-lg bg-warning bg-opacity-50">
