@@ -9,8 +9,9 @@ class Errors {
     public const DB_CONNECTION          = 6;
     public const INVALID_CREDENTIALS    = 7;
     public const USER_NOT_FOUND         = 8;
-    public const FAILED_FILE_UPLOAD   = 9;
+    public const FAILED_FILE_UPLOAD     = 9;
     public const WRONG_PASSWORD         = 10;
+    public const WRONG_URL              = 11;
 
 public static function getErrorMessage(int $errorCode): string
 {
@@ -23,8 +24,9 @@ public static function getErrorMessage(int $errorCode): string
         self::DB_CONNECTION         => "Erreur lors de la connexion à la base de donnée",
         self::INVALID_CREDENTIALS   => "Identifiants invalides",
         self::USER_NOT_FOUND        => "Utilisateur inconnu",
-        self::FAILED_FILE_UPLOAD  => "Erreur lors de l'upload de fichier",
+        self::FAILED_FILE_UPLOAD    => "Erreur lors de l'upload de fichier",
         self::WRONG_PASSWORD        => "Mot de passe incorrect",
+        self::WRONG_URL             => "Url invalide",
         default                     => "Une erreur est survenue"
     };
 }

@@ -5,3 +5,7 @@ body {
     justify-content: space-between;
 
 }
+
+input #content {
+    height: 150px;
+}

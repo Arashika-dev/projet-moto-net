@@ -14,16 +14,17 @@ $menuItemsRight = [
 
 if (isset($_SESSION['userInfos'])){
     $menusItemsRightAuth = [
+    new MenuItem ('edition_article.php', 'Editer'),
     new MenuItem("profile.php",$_SESSION['userInfos']['pseudo']),
     new MenuItem("logout.php","Déconnexion")
     ];
 }
 
-if(isset($_SESSION["userInfos"]["admin"])) {
-    $menusItemsAdmin = [
-        new MenuItem ('edition.php', 'Editer')
-    ];
-}
+// if(isset($_SESSION["userInfos"]["admin"])) {
+//     $menusItemsAdmin = [
+        
+//     ];
+// }
 ?>
 
 <nav class="navbar navbar-expand-lg bg-warning bg-opacity-50">
