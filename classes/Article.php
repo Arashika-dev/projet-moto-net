@@ -39,13 +39,13 @@ class Article {
         if (!$verifStmt->fetch(PDO::FETCH_ASSOC)) {
             throw new InvalidArticleTypeException;
         }
-        $this->userId = $userId;
-        $this->typeId = $typeId;
-        $this->title = $title;
-        $this->textContent = $textContent;
-        $this->imgCover = $imgCover;
-        $this->imgContent = $imgContent;
-        $this->youtubeLink = $youtubeLink;
+        $this->userId       = $userId;
+        $this->typeId       = $typeId;
+        $this->title        = $title;
+        $this->textContent  = $textContent;
+        $this->imgCover     = $imgCover;
+        $this->imgContent   = $imgContent;
+        $this->youtubeLink  = $youtubeLink;
 
         $filepath = 'uploads/articles/';
         $imgCover->uploadFile($filepath,'imgCover');
@@ -53,19 +53,35 @@ class Article {
 
         $query = 'INSERT INTO article (id_user , id_type, article_title, article_text, image_cover, image_content, video_id) VALUES(:userId , :typeId, :title, :text, :imgCover, :imgContent, :video)';
         $stmt = $pdo->prepare($query);
-        $stmt->bindValue('userId', $this->userId);
-        $stmt->bindValue('typeId', $this->typeId);
-        $stmt->bindValue('title', $this->title);
-        $stmt->bindValue('text', $this->textContent);
-        $stmt->bindValue('imgCover', self::getImgCoverName());
-        $stmt->bindValue('imgContent', self::getImgContentName());
-        $stmt->bindValue('video', self::getYoutubeLinkId());
-        $stmt->execute();
+        $stmt->execute([
+            'userId'    => $this->userId,
+            'typeId'    => $this->typeId,
+            'title'     => $this->title,
+            'text'      => $this->textContent,
+            'imgCover'  => self::getImgCoverName(),
+            'imgContent'=> self::getImgContentName(),
+            'video'     => self::getYoutubeLinkId()
+        ]);
     
         $this->articleId = $pdo->lastInsertId();
     }
 
-
+    public function getArticle (string $id) :void
+    {
+        $pdo = getConnection();
+        $this->articleId = $id;
+        $query = 'SELECT * FROM article WHERE article_id = :id';
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(['id' => $id]);
+        $article = $stmt->fetch();
+        $this->userId       = $article['user_id'];
+        $this->typeId       = $article['id_type'];
+        $this->title        = $article['article_title'];
+        $this->textContent  = $article['article_text'];
+        $this->imgCover     = new File($article['image_cover']);
+        $this->imgContent   = new File($article['image_content']);
+        $this->youtubeLinkId = $article['video_id'] ?? '';
+    }
     public function getUserId(){ return $this->userId; }
 
     public function getTypeId(){ return $this->typeId; }
