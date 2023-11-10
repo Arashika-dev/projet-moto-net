@@ -37,11 +37,11 @@ $type = $pdo->query("SELECT * FROM type");
                             <input type="file" class="form-control" name="imgCover" id="imgCover" required>
                         </div>
                         <div class="col-6 offset-3 my-2">
-                            <label for="" class="form-label" >Image du contenu :</label>
+                            <label for="imgContent" class="form-label" >Image du contenu :</label>
                             <input type="file" class="form-control" name="imgContent" id="imgContent" required>
                         </div>
                         <div class="col-10 offset-1 my-2">
-                            <label for="" class="form-label">Texte article :</label>
+                            <label for="content" class="form-label">Texte article :</label>
                             <textarea class="form-control" rows="15" name="content" id="content"></textarea required>
                         </div>
                         <div class="col-6 offset-3 my-2">

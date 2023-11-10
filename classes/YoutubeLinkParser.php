@@ -19,7 +19,7 @@ class YoutubeLinkParser {
         // return $urlParse["path"];
 
     return match ($urlParse["host"]) {
-            "youtube.com"   => explode('=', $urlParse["query"])[1],
+            "www.youtube.com"   => explode('=', $urlParse["query"])[1],
             "youtu.be"      => $urlParse["path"]
         };
     }
