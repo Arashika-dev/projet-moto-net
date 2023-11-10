@@ -17,7 +17,7 @@ class Profile
     private File $profilePicture;
     public function __construct(
         private int $id,
-        PDO $pdo
+        private PDO $pdo
     ) {
         $query  = "SELECT * FROM users WHERE user_id = :id";
         $stmt = $pdo->prepare($query);
@@ -31,7 +31,7 @@ class Profile
         $this->profilePicture = new File ($user['user_profile_picture'] ?? 'default.png');
     }
 
-    public function updatePseudo(PDO $pdo, string $newPseudo):void
+    public function updatePseudo($pdo, string $newPseudo):void
     {
         $checker = new DuplicateChecker($pdo);
     if($checker->isDuplicate($newPseudo, 'pseudo', $this->id)) {
@@ -76,7 +76,7 @@ class Profile
             $oldPicturePath = 'uploads/profile_picture/' . $oldPictureName;
 
             $profilePicture = new File('profilePicture');
-            $fileName =  $profilePicture ->uploadFile('uploads/profile_picture/','profilePic');
+            $fileName =  $profilePicture->uploadFile('uploads/profile_picture/','profilePic');
             self::updateRequest($pdo,'profile_picture', $fileName);
 
             //Delete old picture

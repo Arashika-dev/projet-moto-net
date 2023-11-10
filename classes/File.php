@@ -26,8 +26,11 @@ class File {
         if (!move_uploaded_file($file['tmp_name'], $destination)) {
             throw new FailedUploadException;
         }
-
+        
+        self::setFileName($fileName);
         return $fileName;
     }
     public function getFileName(): string { return $this->fileName; }
+
+    public function setFileName(string $fileName): self { $this->fileName = $fileName; return $this; }
 }

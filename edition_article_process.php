@@ -20,7 +20,7 @@ try{
     $articleId = $article->getArticleId();
     Utils::redirect('edition_article_success.php?id=' . $articleId);
 } catch(FailedUploadException | InvalidArticleTypeException | InvalidUrlException $e) {
-    Utils::redirect('edition_article.php'. $e->getCode());
+    Utils::redirect('edition_article.ph?error='. $e->getCode());
 } catch(Exception $e) {
     Utils::redirect('index.php'. $e->getMessage());
 }

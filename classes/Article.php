@@ -5,7 +5,8 @@ require_once __DIR__ ."/../functions/db.php";
 require_once __DIR__ ."/Utils.php";
 require_once __DIR__ ."/Exceptions/EmptyException.php";
 require_once __DIR__ ."/Exceptions/InvalidTypeArticleException.php";
-class Article {
+class Article
+{
     private string $articleId;
     private int $userId;
     private int $typeId;
@@ -14,10 +15,13 @@ class Article {
     private File $imgCover;
     private File $imgContent;
     private string $youtubeLink = '';
-    public function __construct() {
-        
+    private string $date;
+    private const UPLOAD_PATH = 'uploads/articles/';
+    public function __construct()
+    {
+
     }
-    public function uploadArticle (
+    public function uploadArticle(
         int $userId,
         int $typeId,
         string $title,
@@ -25,19 +29,18 @@ class Article {
         File $imgCover,
         File $imgContent,
         string $youtubeLink = ''
-    ):void
-    {
+    ): void {
         if (empty($userId) || empty($typeId) || empty($title) || empty($textContent) || empty($imgCover) || empty($imgContent)) {
             throw new EmptyException();
         }
 
         $pdo = getConnection();
-        // Vérifier que le typeId existe dans la table 'type'
+        //Verify that the typeId exists in the 'type' table.
         $verifStmt = $pdo->prepare('SELECT type_id FROM type WHERE type_id = :typeId');
         $verifStmt->execute(['typeId' => $typeId]);
 
         if (!$verifStmt->fetch(PDO::FETCH_ASSOC)) {
-            throw new InvalidArticleTypeException;
+            throw new InvalidArticleTypeException();
         }
         $this->userId       = $userId;
         $this->typeId       = $typeId;
@@ -45,11 +48,11 @@ class Article {
         $this->textContent  = $textContent;
         $this->imgCover     = $imgCover;
         $this->imgContent   = $imgContent;
-        $this->youtubeLink  = $youtubeLink;
+        $this->youtubeLink  = $youtubeLink ?? '';
 
-        $filepath = 'uploads/articles/';
-        $imgCover->uploadFile($filepath,'imgCover');
-        $imgContent->uploadFile($filepath,'imgContent');
+
+        $imgCover->uploadFile(self::UPLOAD_PATH, 'imgCover');
+        $imgContent->uploadFile(self::UPLOAD_PATH, 'imgContent');
 
         $query = 'INSERT INTO article (id_user , id_type, article_title, article_text, image_cover, image_content, video_id) VALUES(:userId , :typeId, :title, :text, :imgCover, :imgContent, :video)';
         $stmt = $pdo->prepare($query);
@@ -59,14 +62,14 @@ class Article {
             'title'     => $this->title,
             'text'      => $this->textContent,
             'imgCover'  => self::getImgCoverName(),
-            'imgContent'=> self::getImgContentName(),
-            'video'     => self::getYoutubeLinkId()
+            'imgContent' => self::getImgContentName(),
+            'video'     => self::setYoutubeLinkId()
         ]);
-    
+
         $this->articleId = $pdo->lastInsertId();
     }
 
-    public function getArticle (string $id) :void
+    public function getArticle(string $id): void
     {
         $pdo = getConnection();
         $this->articleId = $id;
@@ -74,32 +77,52 @@ class Article {
         $stmt = $pdo->prepare($query);
         $stmt->execute(['id' => $id]);
         $article = $stmt->fetch();
-        $this->userId       = $article['user_id'];
-        $this->typeId       = $article['id_type'];
-        $this->title        = $article['article_title'];
-        $this->textContent  = $article['article_text'];
-        $this->imgCover     = new File($article['image_cover']);
-        $this->imgContent   = new File($article['image_content']);
-        $this->youtubeLinkId = $article['video_id'] ?? '';
+        self::setUserId($article['id_user']);
+        self::setTypeId($article['id_type']);
+        self::setTitle($article['article_title']);
+        self::setTextContent($article['article_text']);
+        self::setImgCover($article['image_cover']);
+        self::setImgContent($article['image_content']);
+        self::setYoutubeShortLink($article['video_id']);
+        self::setDate($article['date_of_publication']);
     }
-    public function getUserId(){ return $this->userId; }
+    public function getUserId() {return $this->userId; }
+    public function setUserId(int $userId): self { $this->userId = $userId; return $this; }
 
-    public function getTypeId(){ return $this->typeId; }
+    public function getTypeId() { return $this->typeId; }
+    public function setTypeId(int $typeId): self { $this->typeId = $typeId; return $this; }
 
     public function getTitle(){ return $this->title; }
+    public function setTitle(string $title): self { $this->title = $title; return $this; }
 
     public function getTextContent(){ return $this->textContent; }
+    public function setTextContent(string $textContent): self { $this->textContent = $textContent; return $this; }
 
-    public function getImgCoverName(){ return $this->imgCover->getFileName(); }
+    public function getImgCoverName() { return $this->imgCover->getFileName(); }
+    public function setImgCover(string $imgCover): self { $this->imgCover = new File($imgCover); return $this; }
 
-    public function getImgContentName(){ return $this->imgContent->getFileName(); }
-
-    public function getYoutubeLinkId(): string { 
+    public function getImgContentName() { return $this->imgContent->getFileName(); }
+    
+    public function setImgContent(string $imgContent): self { $this->imgContent =new File($imgContent); return $this; }
+    /**
+     * Create an instance of YoutubeLinkParser and return the 'short' ID of Youtube video
+     * @return string
+     */
+    public function setYoutubeLinkId(): string
+    {
         $shortLink = new YoutubeLinkParser($this->youtubeLink);
         return $shortLink->getIdLink();
     }
-
-    public function getYoutubeFullLink(): string { return $this->youtubeLink; }
+    public function setYoutubeShortLink(string $youtubeLink): self { $this->youtubeLink = $youtubeLink; return $this; }
 
     public function getArticleId(): string { return $this->articleId; }
+
+    /**
+    * Return the ID to embed in the YouTube iframe.
+    * @return string
+    */
+    public function getYoutubeShortLink(): string { return $this->youtubeLink; }
+
+    public function getDate(): string { return explode(' ',$this->date)[0]; }
+    public function setDate(string $date): self { $this->date = $date; return $this; }
 }

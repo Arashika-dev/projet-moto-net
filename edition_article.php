@@ -16,6 +16,11 @@ $type = $pdo->query("SELECT * FROM type");
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
                 <div class="border rounded p-3">
+                    <?php if (isset($_GET['error'])){ ?>
+                            <div class="alert alert-danger w-50 text-center">
+                                <?php echo Errors::getErrorMessage($_GET['error']) ?>
+                            </div> 
+                    <?php } ?>
                     <form action="edition_article_process.php" enctype="multipart/form-data" method="POST">
                         <div class="col-6 offset-3 my-2">
                             <label for="type" class="form-label">Type article</label>
