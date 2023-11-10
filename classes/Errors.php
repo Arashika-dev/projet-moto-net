@@ -12,11 +12,12 @@ class Errors {
     public const FAILED_FILE_UPLOAD     = 9;
     public const WRONG_PASSWORD         = 10;
     public const WRONG_URL              = 11;
+    public const WRONG_TYPE_ARTICLE     = 12;
 
 public static function getErrorMessage(int $errorCode): string
 {
     return match ($errorCode) {
-        self::EMPTY                 => "Tous les champs sont obligatoire",
+        self::EMPTY                 => "Merci de remplir tous les champs obligatoire",
         self::EMAIL_INVALID         => "Le format de l'email est incorrect",
         self::EMAIL_DUPLICATE       => "L'email existe déjà dans la base de données",
         self::PASS_DIFFERENT        => "Les mots de passe doivent être identiques",

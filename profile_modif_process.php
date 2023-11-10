@@ -19,12 +19,12 @@ $profile = new Profile($_SESSION['userInfos']['id'], $pdo);
 
 if (empty($_POST)) {
     if (isset($_FILES['profilePic'])) {
-    try {
-        $profile->updateProfilePicture($pdo);
-        Utils::redirect('profile.php');
-    }catch (FailedUploadException $e) {
-        Utils::redirect('profile.php?error' . $e->getCode());
-    }
+        try {
+            $profile->updateProfilePicture($pdo);
+            Utils::redirect('profile.php');
+        }catch (FailedUploadException $e) {
+            Utils::redirect('profile.php?error' . $e->getCode());
+        }
     }else {
         Utils::redirect('profile.php?error=' . Errors::EMPTY);
     }

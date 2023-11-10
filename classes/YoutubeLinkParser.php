@@ -8,4 +8,19 @@ class YoutubeLinkParser {
 
         $this->urlParse = parse_url($this->url);
     } 
+    public function getIdLink () : string 
+    {
+        $urlParse = $this->urlParse;
+
+        // if (str_contains($urlParse["path"], "watch")) {
+        //     return explode('=', $urlParse["query"])[1];
+        // }
+
+        // return $urlParse["path"];
+
+    return match ($urlParse["host"]) {
+            "youtube.com"   => explode('=', $urlParse["query"])[1],
+            "youtu.be"      => $urlParse["path"]
+        };
+    }
 }

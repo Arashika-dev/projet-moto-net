@@ -73,10 +73,10 @@ class Profile
     {
             //Retain the previous file name as a backup in case the upload is successful
             $oldPictureName = self::getProfilePicture();
-            $oldPicturePath = 'img/profile_picture/' . $oldPictureName;
+            $oldPicturePath = 'uploads/profile_picture/' . $oldPictureName;
 
             $profilePicture = new File('profilePicture');
-            $fileName =  $profilePicture ->uploadFile('img/profile_picture/','profilePic');
+            $fileName =  $profilePicture ->uploadFile('uploads/profile_picture/','profilePic');
             self::updateRequest($pdo,'profile_picture', $fileName);
 
             //Delete old picture

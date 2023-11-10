@@ -4,15 +4,11 @@ require_once __DIR__ ."/functions/db.php";
 require_once __DIR__ ."/classes/Profile.php";
 require_once __DIR__ ."/classes/Utils.php";
 require_once __DIR__ ."/layout/header.php";
+require_once __DIR__ ."/functions/checkAuth.php";
 
+isAuthentified();
 $pdo = getConnection();
 $profile = new Profile($_SESSION['userInfos']['id'],$pdo);
-
-if (!isset($_SESSION['userInfos'])) {
-    $_SESSION['loginErrorMessage'] = "Vous devez être identifié pour accéder à cette page";
-    Utils::redirect('login.php');
-}
-
 
 ?>
 
@@ -21,7 +17,7 @@ if (!isset($_SESSION['userInfos'])) {
         <div class="row p-1">
             <div class="col-9 d-lg-flex flex-row border rounded py-3">
                 <div class="col-md-4 pt-4 ps-5">
-                    <img src="img/profile_picture/<?php echo $profile->getProfilePicture() ?>" width="200px" height="200px" alt="" class="border rounded-circle">
+                    <img src="uploads/profile_picture/<?php echo $profile->getProfilePicture() ?>" width="200px" height="200px" alt="" class="border rounded-circle">
                 </div>
                 <div class="col-md-8 offset-md-1">
                     <?php 

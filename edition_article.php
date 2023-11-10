@@ -1,7 +1,9 @@
 <?php 
 require_once __DIR__ . '/layout/header.php';
 require_once __DIR__ ."/functions/db.php";
+require_once __DIR__ ."/functions/checkAuth.php";
 
+isAuthentified();
 $pdo = getConnection();
 
 $type = $pdo->query("SELECT * FROM type");
@@ -14,7 +16,7 @@ $type = $pdo->query("SELECT * FROM type");
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
                 <div class="border rounded p-3">
-                    <form action="edition_article_process.php" enctype="multipart/form-data">
+                    <form action="edition_article_process.php" enctype="multipart/form-data" method="POST">
                         <div class="col-6 offset-3 my-2">
                             <label for="type" class="form-label">Type article</label>
                             <select name="type" id="type" class="form-select w-50" aria-label="Type Article">
