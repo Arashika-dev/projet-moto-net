@@ -12,10 +12,9 @@ try {
 $typeResult = $pdo->query("SELECT * FROM type");
 $types = $typeResult->fetchAll(PDO::FETCH_ASSOC);
 
-// Nombre d'articles par page
 $articlesPerPage = 8;
 
-// Page actuelle (par défaut à 1 si non spécifiée dans l'URL)
+// Page actuelle (1 si pas dans l'URL)
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
 $filter = $_GET['filter'] ?? 'all';
@@ -28,11 +27,10 @@ if ($filter !== 'all') {
 // Calcul du décalage pour la pagination
 $offset = ($page - 1) * $articlesPerPage;
 
-// Requête avec LIMIT et OFFSET
 $sql = "SELECT * FROM article" . $filterCondition . " LIMIT :limit OFFSET :offset";
 $articleStmt = $pdo->prepare($sql);
-$articleStmt->bindParam(':limit', $articlesPerPage, PDO::PARAM_INT);
-$articleStmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+$articleStmt->bindValue('limit', $articlesPerPage);
+$articleStmt->bindValue('offset', $offset);
 $articleStmt->execute();
 $articles = $articleStmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -51,16 +49,18 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
             <form action="articles.php" method="get" id="filter-form">
                 <select name="filter" id="filter" class="form-select w-50" aria-label="Tri Article" id="filter" onchange="triggerFilter()">
                     <option value="all" <?php if ($filter === 'all') { echo "selected"; } ?>>Tous</option>
-                    <?php foreach ($types as $type) : ?>
-                        <option value="<?php echo $type['type_id'] ?>" <?php if ((int)$filter === $type['type_id']) { echo "selected"; } ?>><?php echo $type['type_name'] ?></option>
-                    <?php endforeach; ?>
+                    <?php foreach ($types as $type) { ?>
+                        <option value="<?php echo $type['type_id'] ?>" <?php if ((int)$filter === $type['type_id']) {
+                            echo "selected";
+                        } ?>><?php echo $type['type_name'] ?></option>
+                    <?php } ?>
                 </select>
             </form>
         </div>
         <div class="row mt-4">
-            <?php foreach ($articles as $row) : ?>
+            <?php foreach ($articles as $row) { ?>
                 <?php require __DIR__ . '/layout/article_preview.php'; ?>
-            <?php endforeach; ?>
+            <?php } ?>
         </div>
         
         <!-- Pagination -->
@@ -75,9 +75,7 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
                 <?php } ?>
 
                 <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
-                    <li class="page-item <?php if ($i === $page) {
-                        echo 'active';
-                    } ?>">
+                    <li class="page-item <?php if ($i === $page) {echo 'active';} ?>">
                         <a class="page-link" href="?page=<?php echo $i . "&filter=" . $filter; ?>"><?php echo $i; ?></a>
                     </li>
                 <?php } ?>
