@@ -3,7 +3,7 @@ require_once __DIR__ ."/../classes/MenuItem.php";
 
 $menuItemsLeft = [
     new MenuItem("index.php", "Accueil"),
-    new MenuItem("article.php","Articles"),
+    new MenuItem("articles.php","Articles"),
     new MenuItem("annonces.php","Occasions"),
 ];
 

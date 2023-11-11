@@ -34,7 +34,7 @@ $type = $typeStmt->fetch();
             </div>
             <div class="col-lg-6 text-start">
                 <p>
-                    <?php echo $article->getTextContent() ?>
+                    <?php echo nl2br($article->getTextContent()) ?>
                 </p>
             </div>
             <div class="col-lg-5 d-flex align-items-center">
