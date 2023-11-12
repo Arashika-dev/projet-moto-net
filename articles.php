@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/layout/header.php";
 require_once __DIR__ . "/functions/db.php";
+require_once __DIR__ . "/classes/Article.php";
 
 try {
     $pdo = getConnection();
@@ -27,10 +28,11 @@ if ($filter !== 'all') {
 // Calculation of the offset for pagination
 $offset = ($page - 1) * $articlesPerPage;
 
-$sql = "SELECT * FROM article" . $filterCondition . " LIMIT " . $articlesPerPage . " OFFSET " . $offset;
-$articleStmt = $pdo->prepare($sql);
-$articleStmt->execute();
-$articles = $articleStmt->fetchAll(PDO::FETCH_ASSOC);
+$sql = "SELECT article_id FROM article" . $filterCondition . " LIMIT " . $articlesPerPage . " OFFSET " . $offset;
+$idStmt = $pdo->prepare($sql);
+$idStmt->execute();
+$articlesIds = $idStmt->fetchAll(PDO::FETCH_COLUMN);
+$article = new Article();
 
 // Total number of articles for pagination
 $totalArticles = $pdo->query("SELECT COUNT(*) FROM article" . $filterCondition)->fetchColumn();
@@ -56,7 +58,7 @@ $totalPages = ceil($totalArticles / $articlesPerPage);
             </form>
         </div>
         <div class="row mt-4">
-            <?php foreach ($articles as $row) { ?>
+            <?php foreach ($articlesIds as $row) { ?>
                 <?php require __DIR__ . '/layout/article_preview.php'; ?>
             <?php } ?>
         </div>
