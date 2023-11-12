@@ -9,13 +9,13 @@ require_once __DIR__ ."/functions/checkAuth.php";
 isAuthentified();
 $pdo = getConnection();
 $profile = new Profile($_SESSION['userInfos']['id'],$pdo);
-
+$lastArticles = $profile->getLastArticles($pdo);
 ?>
 
 <main>
-    <div class="container my-4">
+    <div class="container-fluid my-4">
         <div class="row p-1">
-            <div class="col-9 d-lg-flex flex-row border rounded py-3">
+            <div class="col-8 d-lg-flex flex-row border rounded py-3 bg-light">
                 <div class="col-md-4 pt-4 ps-5">
                     <img src="uploads/profile_picture/<?php echo $profile->getProfilePicture() ?>" width="200px" height="200px" alt="" class="border rounded-circle">
                 </div>
@@ -97,8 +97,18 @@ $profile = new Profile($_SESSION['userInfos']['id'],$pdo);
                     </form>
                 </div>
             </div>
-            <div class="col-md-3">
-            
+            <div class="col-md-4">
+                <div class="border rounded d-flex flex-column bg-light">
+                    <h2 class="m-1 fs-4 fw-semibold">Vos derniers articles</h2>
+                    <?php foreach ($lastArticles as $article) { ?>
+                        <div class="mx-3 border-bottom pt-3">
+                            <a href="article_display.php?id=<?php echo $article['article_id'] ?>" class="link-dark link-underline-opacity-0 link-underline-opacity-75-hover">
+                                <h3 class="fs-5 mb-1"><?php echo $article['article_title'] ?></h3>
+                                <p class="fst-italic fs-6">Le <?php echo explode(' ', $article['date_of_publication'])[0] ?></p>
+                            </a>
+                        </div>
+                    <?php } ?>
+                </div>
             </div>
         </div>
     </div>

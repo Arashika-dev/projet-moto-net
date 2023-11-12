@@ -11,7 +11,7 @@
         <div class="h-75 d-flex flex-column justify-content-between">
             <h3 class="text-center"><?php echo $row['article_title']?></h3>
             <p><?php echo nl2br(substr($row['article_text'], 0, 420)); ?>...</p>
-            <a href="#" class="btn btn-primary w-25 align-self-<?php echo $isLeftAligned ? 'end' : 'start'; ?>">En savoir plus</a>
+            <a href="article_display.php?id=<?php echo $row['article_id'] ?>" class="btn btn-primary w-25 align-self-<?php echo $isLeftAligned ? 'end' : 'start'; ?>">En savoir plus</a>
         </div>
     </div>
 

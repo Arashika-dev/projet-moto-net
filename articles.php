@@ -27,10 +27,8 @@ if ($filter !== 'all') {
 // Calcul du décalage pour la pagination
 $offset = ($page - 1) * $articlesPerPage;
 
-$sql = "SELECT * FROM article" . $filterCondition . " LIMIT :limit OFFSET :offset";
+$sql = "SELECT * FROM article" . $filterCondition . " LIMIT " . $articlesPerPage . " OFFSET " . $offset;
 $articleStmt = $pdo->prepare($sql);
-$articleStmt->bindValue('limit', $articlesPerPage);
-$articleStmt->bindValue('offset', $offset);
 $articleStmt->execute();
 $articles = $articleStmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -1,6 +1,8 @@
 <?php 
+session_start();
 require_once __DIR__ ."/layout/header.php";
 require_once __DIR__ ."/classes/Errors.php";
+
 ?>
 
 <main>
@@ -10,7 +12,8 @@ require_once __DIR__ ."/classes/Errors.php";
             <div class="border rounded p-3">
             <?php if (isset($_SESSION['loginErrorMessage'])) { ?>
                 <div class="p-4 alert alert-danger">
-                    <?php echo $_SESSION['loginErrorMessage']; ?>
+                    <?php echo $_SESSION['loginErrorMessage'];
+                    unset($_SESSION['loginErrorMessage']) ?>
                 </div>
             <?php } ?>
             <?php if (isset($_GET['error'])) { ?>

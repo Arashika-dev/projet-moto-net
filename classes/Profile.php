@@ -17,7 +17,7 @@ class Profile
     private File $profilePicture;
     public function __construct(
         private int $id,
-        private PDO $pdo
+        PDO $pdo
     ) {
         $query  = "SELECT * FROM users WHERE user_id = :id";
         $stmt = $pdo->prepare($query);
@@ -31,7 +31,7 @@ class Profile
         $this->profilePicture = new File ($user['user_profile_picture'] ?? 'default.png');
     }
 
-    public function updatePseudo($pdo, string $newPseudo):void
+    public function updatePseudo(PDO $pdo, string $newPseudo):void
     {
         $checker = new DuplicateChecker($pdo);
     if($checker->isDuplicate($newPseudo, 'pseudo', $this->id)) {
@@ -94,6 +94,14 @@ class Profile
         $stmt->bindValue(':update', $valueUpdate);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
+    }
+
+    public function getLastArticles(PDO $pdo):array
+    {
+        $query = 'SELECT * FROM article WHERE id_user = :id ORDER BY date_of_publication DESC LIMIT 5';
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(['id'=> $this->id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getLastName(): string { return $this->lastName; }
