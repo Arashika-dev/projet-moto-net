@@ -6,3 +6,10 @@ function isAuthentified (){
         Utils::redirect('login.php');
     }
 }
+
+function isAdmin (){
+    if (!$_SESSION['userInfos']['is_admin']) {
+        $_SESSION['loginErrorMessage'] = "Vous n'avez pas les droits pour accéder à cette page";
+        Utils::redirect('login.php');
+    }
+}

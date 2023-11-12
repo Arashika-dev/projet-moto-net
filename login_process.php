@@ -40,7 +40,7 @@ if (!password_verify($password, $user['user_password'])) {
 $_SESSION['userInfos'] = [
     'id' => $user['user_id'],
     'pseudo' => $user['user_pseudo'],
-    'admin' => $user['user_is_admin']
+    'is_admin' => $user['user_is_admin']
 ];
 
 Utils::redirect('index.php');

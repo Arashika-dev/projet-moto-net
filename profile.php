@@ -15,7 +15,7 @@ $lastArticles = $profile->getLastArticles($pdo);
 <main>
     <div class="container-fluid my-4">
         <div class="row p-1">
-            <div class="col-8 d-lg-flex flex-row border rounded py-3 bg-light">
+            <div class="col-8 d-lg-flex flex-row border rounded py-3 bg-light  <?php if($_SESSION['userInfos']['is_admin'] == 0) { echo'offset-2'; } ?>">
                 <div class="col-md-4 pt-4 ps-5">
                     <img src="uploads/profile_picture/<?php echo $profile->getProfilePicture() ?>" width="200px" height="200px" alt="" class="border rounded-circle">
                 </div>
@@ -98,6 +98,7 @@ $lastArticles = $profile->getLastArticles($pdo);
                 </div>
             </div>
             <div class="col-md-4">
+                <?php if($_SESSION['userInfos']['is_admin'] == 1) { ?>
                 <div class="border rounded d-flex flex-column bg-light">
                     <h2 class="m-1 fs-4 fw-semibold">Vos derniers articles</h2>
                     <?php foreach ($lastArticles as $article) { ?>
@@ -107,8 +108,9 @@ $lastArticles = $profile->getLastArticles($pdo);
                                 <p class="fst-italic fs-6">Le <?php echo explode(' ', $article['date_of_publication'])[0] ?></p>
                             </a>
                         </div>
-                    <?php } ?>
                 </div>
+                    <?php }
+                    } ?>
             </div>
         </div>
     </div>

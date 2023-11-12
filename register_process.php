@@ -20,7 +20,7 @@ try {
     $_SESSION['userInfos'] = [
         'pseudo' => $register->getPseudo(),
         'id' => $pdo->lastInsertId(),
-        'admin' => $user['user_is_admin']
+        'is_admin' => $user['user_is_admin']
     ];
     Utils::redirect('register_success.php');
 

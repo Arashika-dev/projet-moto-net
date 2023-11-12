@@ -12,19 +12,22 @@ $menuItemsRight = [
     new MenuItem("login.php","Connexion")
     ];
 
+$menusItemsAdmin = [];
+
 if (isset($_SESSION['userInfos'])){
     $menusItemsRightAuth = [
-    new MenuItem ('edition_article.php', 'Editer'),
     new MenuItem("profile.php",$_SESSION['userInfos']['pseudo']),
     new MenuItem("logout.php","Déconnexion")
     ];
+
+    if($_SESSION["userInfos"]["is_admin"] == 1) {
+        $menusItemsAdmin = [
+            new MenuItem ('edition_article.php', 'Editer')
+        ];
+    }
 }
 
-// if(isset($_SESSION["userInfos"]["admin"])) {
-//     $menusItemsAdmin = [
-        
-//     ];
-// }
+
 ?>
 
 <nav class="navbar navbar-expand-lg bg-warning bg-opacity-50">
@@ -44,6 +47,11 @@ if (isset($_SESSION['userInfos'])){
                 </div>
                 <div class="d-flex flex-column flex-lg-row">
                         <?php 
+                            foreach ($menusItemsAdmin as $item) {?>
+                            <a class= <?php echo $item->getCssClasses() ?> href="<?php echo $item->getUrl() ?>"><?php echo $item->getLabel() ?></a>
+                            <?php }
+                            
+
                         if(!isset($_SESSION["userInfos"])) {
                             foreach ($menuItemsRight as $item) { ?>
                                 <a class= <?php echo $item->getCssClasses() ?> href="<?php echo $item->getUrl() ?>"><?php echo $item->getLabel() ?></a>

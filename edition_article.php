@@ -3,7 +3,7 @@ require_once __DIR__ . '/layout/header.php';
 require_once __DIR__ ."/functions/db.php";
 require_once __DIR__ ."/functions/checkAuth.php";
 
-isAuthentified();
+isAdmin();
 $pdo = getConnection();
 
 $type = $pdo->query("SELECT * FROM type");
@@ -11,11 +11,11 @@ $type = $pdo->query("SELECT * FROM type");
 ?>
 
 <main>
-    <div class="container mt-5">
-        <h1 class="text-center">Rédiger un article</h1>
+    <div class="container mt-4">
+        <h1 class="text-center mb-3">Rédiger un article</h1>
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
-                <div class="border rounded p-3">
+                <div class="border rounded p-3 bg-light">
                     <?php if (isset($_GET['error'])){ ?>
                             <div class="alert alert-danger w-50 text-center">
                                 <?php echo Errors::getErrorMessage($_GET['error']) ?>
@@ -37,13 +37,15 @@ $type = $pdo->query("SELECT * FROM type");
                             <label for="title" class="form-label">Titre de l'article :</label>
                             <input type="text" class="form-control" name="title" id="title" required>
                         </div>
-                        <div class="col-6 offset-3 my-2">
-                            <label for="imgCover" class="form-label" >Image de couverture :</label>
-                            <input type="file" class="form-control" name="imgCover" id="imgCover" required>
-                        </div>
-                        <div class="col-6 offset-3 my-2">
-                            <label for="imgContent" class="form-label" >Image du contenu :</label>
-                            <input type="file" class="form-control" name="imgContent" id="imgContent" required>
+                        <div class="row">
+                            <div class="col-5 offset-1 my-2">
+                                <label for="imgCover" class="form-label" >Image de couverture :</label>
+                                <input type="file" class="form-control" name="imgCover" id="imgCover" required>
+                            </div>
+                            <div class="col-5 my-2">
+                                <label for="imgContent" class="form-label" >Image du contenu :</label>
+                                <input type="file" class="form-control" name="imgContent" id="imgContent" required>
+                            </div>
                         </div>
                         <div class="col-10 offset-1 my-2">
                             <label for="content" class="form-label">Texte article :</label>
