@@ -35,7 +35,7 @@ $lastArticles = $profile->getLastArticles($pdo);
                                 <input type="text" class="form-control" name="pseudo" id="pseudo" value="<?php echo $profile->getPseudo() ?>" disabled required>
                             </div>
                             <div>
-                            <button class="btn btn-primary d-none" type="submit">Enregistrer</button>
+                                <button class="btn btn-primary d-none" type="submit">Enregistrer</button>
                             </div>
                         </div>        
                     </form>
