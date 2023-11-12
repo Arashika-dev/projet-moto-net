@@ -37,6 +37,10 @@ $type = $pdo->query("SELECT * FROM type");
                             <label for="title" class="form-label">Titre de l'article :</label>
                             <input type="text" class="form-control" name="title" id="title" required>
                         </div>
+                        <div class="col-6 offset-3 my-2">
+                            <label for="tags" class="form-label">Tags (séparés par des virgules) :</label>
+                            <input type="text" class="form-control" name="tags" id="tags" placeholder="Tag1, Tag2, Tag3">
+                        </div>
                         <div class="row">
                             <div class="col-5 offset-1 my-2">
                                 <label for="imgCover" class="form-label" >Image de couverture :</label>

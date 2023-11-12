@@ -14,7 +14,7 @@ $types = $typeResult->fetchAll(PDO::FETCH_ASSOC);
 
 $articlesPerPage = 8;
 
-// Page actuelle (1 si pas dans l'URL)
+// Current page (1 if not in the URL)
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
 $filter = $_GET['filter'] ?? 'all';
@@ -24,7 +24,7 @@ if ($filter !== 'all') {
     $filterCondition = ' WHERE id_type = ' . $filter;
 }
 
-// Calcul du décalage pour la pagination
+// Calculation of the offset for pagination
 $offset = ($page - 1) * $articlesPerPage;
 
 $sql = "SELECT * FROM article" . $filterCondition . " LIMIT " . $articlesPerPage . " OFFSET " . $offset;
@@ -32,10 +32,10 @@ $articleStmt = $pdo->prepare($sql);
 $articleStmt->execute();
 $articles = $articleStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Nombre total d'articles pour la pagination
+// Total number of articles for pagination
 $totalArticles = $pdo->query("SELECT COUNT(*) FROM article" . $filterCondition)->fetchColumn();
 
-// Nombre total de pages
+// Total number of pages
 $totalPages = ceil($totalArticles / $articlesPerPage);
 
 ?>

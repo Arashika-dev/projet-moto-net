@@ -16,6 +16,12 @@ $type = $typeStmt->fetch();
 
     <section class="container mt-4">
         <h1 class="text-center my-3"><?php echo $article->getTitle(); ?></h1>
+        <div class="text-center">
+            <?php foreach($article->getTags() as $tag) { ?>
+                <span class="badge rounded-pill text-bg-warning"><?php echo $tag ?></span>
+
+            <?php }?>
+        </div>
         <div class="row my-3">
             <div class="col-lg-3 d-flex align-items-start justify-content-start fst-italic flex-column">
                 <h2 class="fs-5"><?php echo $type['type_name'] ?></h2>

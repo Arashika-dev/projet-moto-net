@@ -1,17 +1,19 @@
 <?php 
 require_once __DIR__ ."/layout/header.php";
 require_once __DIR__ ."/functions/db.php";
+require_once __DIR__ ."/classes/Article.php";
 
 $pdo = getConnection();
-$actuQuery = 'SELECT * FROM article WHERE id_type = 2 ORDER BY date_of_publication DESC LIMIT 3';
+$article = new Article();
+$actuQuery = 'SELECT article_id FROM article WHERE id_type = 2 ORDER BY date_of_publication DESC LIMIT 3';
 $actuStmt = $pdo->prepare($actuQuery);
 $actuStmt->execute();
-$lastActu = $actuStmt->fetchAll(PDO::FETCH_ASSOC);
+$lastActu = $actuStmt->fetchAll(PDO::FETCH_COLUMN);
 
 $essaiQuery = 'SELECT * FROM article WHERE id_type = 1 ORDER BY date_of_publication DESC LIMIT 3';
 $essaiStmt = $pdo->prepare($essaiQuery);
 $essaiStmt->execute();
-$lastEssai = $essaiStmt->fetchAll(PDO::FETCH_ASSOC);
+$lastEssai = $essaiStmt->fetchAll(PDO::FETCH_COLUMN);
 
 $isLeftAligned = true;
 ?>

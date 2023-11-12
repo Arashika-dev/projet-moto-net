@@ -5,6 +5,7 @@ require_once __DIR__ ."/classes/Article.php";
 isAuthentified();
 $imgCover = $_FILES['imgCover'];
 $imgContent = $_FILES['imgContent'];
+$tags = isset($_POST['tags']) ? explode(',', $_POST['tags']) : [];
     
 try{
     $article = new Article();
@@ -15,6 +16,7 @@ try{
         $_POST['content'],
         new File ($imgCover['tmp_name']),
         new File ($imgContent['tmp_name']),
+        $tags,
         $_POST['video']
     );
     $articleId = $article->getArticleId();
@@ -22,6 +24,6 @@ try{
 } catch(FailedUploadException | InvalidArticleTypeException | InvalidUrlException $e) {
     Utils::redirect('edition_article.ph?error='. $e->getCode());
 } catch(Exception $e) {
-    Utils::redirect('index.php'. $e->getMessage());
+    Utils::redirect('index.php?error='. $e->getMessage());
 }
 ?>
