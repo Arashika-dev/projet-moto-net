@@ -108,9 +108,9 @@ $lastArticles = $profile->getLastArticles($pdo);
                                 <p class="fst-italic fs-6">Le <?php echo explode(' ', $article['date_of_publication'])[0] ?></p>
                             </a>
                         </div>
-                </div>
-                    <?php }
+                        <?php }
                     } ?>
+                </div>
             </div>
         </div>
     </div>
